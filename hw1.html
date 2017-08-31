@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<!-- CS-6630 / CS-6630 Homework 1 -->
+<!-- Jacob Crump, jacob.crump@utah.edu, U0672060 -->
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Data Presentations with SVG</title>
+  <style>
+    rect {
+      fill: rgb(97, 208, 144);
+    }
+    p {
+      font-family: sans-serif;
+      margin: 2px;
+    }
+    .line path {
+      stroke:rgb(42, 125, 235);
+      fill:none;
+      stroke-width:.5px;
+    }
+    .line polyline {
+      stroke:rgb(4, 93, 210);
+      fill:none;
+      stroke-width:.5px;
+    }
+    .linefill path {
+      stroke:rgb(235, 97, 67);
+      fill:rgb(235, 97, 67);
+      stroke-width:.5px;
+    }
+    .linefill polyline {
+      stroke:rgb(198, 54, 23);
+      fill:rgb(198, 54, 23);
+      stroke-width:.5px;
+    }
+    .scatter {
+      border: 1px black solid;
+    }
+    circle {
+      fill:rgb(90, 15, 126);
+    }
+  </style>
+</head>
+
+<body>
+<p>CS-5630 / CS-6630 Homework 1</p>
+<p>Jacob Crump</p>
+<p>jacob.crump@utah.edu</p>
+<p>U0672060</p>
+
+<h2>Bar Chart</h2>
+<svg width="500" height="90">
+  <g transform="translate(0, 70) scale(1, -5)">
+    <rect width="9" height="10"></rect>
+    <rect width="9" height="8" x="10"></rect>
+    <rect width="9" height="13" x="20"></rect>
+    <rect width="9" height="9" x="30"></rect>
+    <rect width="9" height="11" x="40"></rect>
+    <rect width="9" height="14" x="50"></rect>
+    <rect width="9" height="6" x="60"></rect>
+    <rect width="9" height="4" x="70"></rect>
+    <rect width="9" height="12" x="80"></rect>
+    <rect width="9" height="7" x="90"></rect>
+    <rect width="9" height="5" x="100"></rect>
+  </g>
+
+  <g transform="translate(140, 70) scale(1, -5)">
+    <g transform="translate(70, 120) scale(1, -1)"><text>Yes</text></g>
+    <rect width="9" height="7.46"></rect>
+    <rect width="9" height="6.77" x="10"></rect>
+    <rect width="9" height="12.74" x="20"></rect>
+    <rect width="9" height="7.11" x="30"></rect>
+    <rect width="9" height="7.81" x="40"></rect>
+    <rect width="9" height="8.84" x="50"></rect>
+    <rect width="9" height="6.08" x="60"></rect>
+    <rect width="9" height="5.39" x="70"></rect>
+    <rect width="9" height="8.15" x="80"></rect>
+    <rect width="9" height="6.42" x="90"></rect>
+    <rect width="9" height="5.73" x="100"></rect>
+  </g>
+</svg>
+<h2>Line Chart</h2>
+<svg class="line" width="250" height="80">
+  <g transform="translate(0, 80) scale(1.1, -5)">
+    <path d="M 0 10 L 10 8 L 20 13 L 30 9 L 40 11
+              L 50 14 L 60 6 L 70 4 L 80 12 L 90 7
+              L 100 5"/>
+  </g>
+  <g transform="translate(140, 80) scale(1.1, -5)">
+    <polyline points = "0,7.46 10,6.77 20,12.74 30,7.11 40,7.81
+                  50,8.84 60,6.08 70,5.39 80,8.15 90,6.42 100,5.73"/>
+  </g>
+</svg>
+
+<h2>Line Chart with Fill</h2>
+<svg class="linefill" width="250" height="100">
+  <g transform="translate(0, 80) scale(1.1, -5)">
+    <path d="M 0 0 L 0 10 L 10 8 L 20 13 L 30 9 L 40 11
+              L 50 14 L 60 6 L 70 4 L 80 12 L 90 7
+              L 100 5 L 100 0"/>
+  </g>
+  <g transform="translate(140, 80) scale(1.1, -5)">
+    <polyline points = "0,0 0,7.46 10,6.77 20,12.74 30,7.11 40,7.81
+                  50,8.84 60,6.08 70,5.39 80,8.15 90,6.42 100,5.73 100,0"/>
+  </g>
+</svg>
+
+<h2>Scatter Plot</h2>
+<svg class="scatter" width="200" height="150">
+  <g transform="translate(20, 146) scale(8, -8)">
+    <circle cx="10" cy="7.46" r=".5"/>
+    <circle cx="8" cy="6.77" r=".5"/>
+    <circle cx="13" cy="12.74" r=".5"/>
+    <circle cx="9" cy="7.11" r=".5"/>
+    <circle cx="11" cy="7.81" r=".5"/>
+    <circle cx="14" cy="8.84" r=".5"/>
+    <circle cx="6" cy="6.08" r=".5"/>
+    <circle cx="4" cy="5.39" r=".5"/>
+    <circle cx="12" cy="8.15" r=".5"/>
+    <circle cx="7" cy="6.42" r=".5"/>
+    <circle cx="5" cy="5.73" r=".5"/>
+  </g>
+</svg>
+
+</body>
+<!-- Received tips from https://css-tricks.com/how-to-make-charts-with-svg/ -->
+</html>
