@@ -5,6 +5,17 @@
  */
 function staircase() {
     // ****** TODO: PART II ******
+    let chart = document.getElementById('firstBarChart');
+    for(var i=0; i<chart.childElementCount; i++) {
+      // var x = chart.children[i].x.animVal.value;
+      // var y = chart.children[i].y.animVal.value;
+      // var width = chart.children[i].width.animVal.value;
+      // var height = chart.children[i].height.animVal.value;
+      let rect = chart.children[i];
+      rect.setAttribute("height", i*10+10);
+      //chart.children[i].height.animVal.value=i*10+10;
+      //var height = chart.children[i].height.animVal.value;
+    }
 }
 
 /**
@@ -82,6 +93,7 @@ function update(error, data) {
  * Load the file indicated by the select menu
  */
 function changeData() {
+
     let dataFile = document.getElementById('dataset').value;
     if (document.getElementById('random').checked) {
         randomSubset();
