@@ -85,6 +85,15 @@ header {
     height: 100px;
 }
 
+ul {
+	margin: 0;
+	padding: 0;
+}
+
+li {
+  list-style-type: none;
+}
+
 #logo {
     float: right;
     height: 100px;

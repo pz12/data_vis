@@ -26,21 +26,23 @@ class BarChart {
         // ******* TODO: PART I *******
 
         let data = this.allData;
-
-
+        let svg = d3.select('#barChart');
+        let infoPanel = this.infoPanel;
+        let map = this.worldMap;
         // Create the x and y scales; make
         // sure to leave room for the axes
         let xScale = d3.scaleLinear() //This is the problem
+
             .domain([0, data.length])
-            .range([0, 400])
+            .range([0, 438])
             .nice();
         let yScale = d3.scaleLinear()
             .domain([0, d3.max(data, d => d[selectedDimension])])
-            .range([0, 250])
+            .range([0, 280])
             .nice();
         let yAxisScale = d3.scaleLinear()
             .domain([0, d3.max(data, d => d[selectedDimension])])
-            .range([250, 0])
+            .range([280, 0])
             .nice();
         let years = []
         for(let i=0; i<data.length; i++) {
@@ -48,13 +50,14 @@ class BarChart {
         }
         let range = []
         for(let i=0; i<data.length; i++) {
-          range.push(i*19.5);
+          range.push(i*5);
         }
         years = years.sort();
-        let xAxisScale = d3.scaleLinear()
-            .domain(years)
-            .range(range)
-            .nice();
+        let xAxisScale = d3.scaleBand()
+          .domain(data.map(function(entry){
+            return entry.year;
+          }))
+          .rangeRound([440, 0])
         // Create colorScale
         let colorScale = d3.scaleLinear()
           .domain([0, d3.max(data, d => d[selectedDimension])])
@@ -67,7 +70,7 @@ class BarChart {
         yAxis.scale(yAxisScale);
         // Create the bars (hint: use #bars)
         let bars = d3.select('#bars')
-                      .attr("transform","translate(80, 50) scale(1,1) rotate(90 150 160) rotate(90 150 80)" )
+                      .attr("transform","translate(118, 51) scale(1,1) rotate(90 150 160) rotate(90 150 80)" )
                       .selectAll('rect')
                       .data(data);
                     bars.exit()
@@ -76,16 +79,18 @@ class BarChart {
                       .remove();
               bars = bars.enter()
                       .append('rect')
-                      .on('click', function() {
+                      .on('click', function(d) {
                         d3.select(".selected").classed("selected", false);
                         d3.select(this).classed("selected", true);
+                        infoPanel.updateInfo(d);
+                        map.updateMap(d);
                       })
                       .merge(bars);
                     bars.transition()
                       .duration(1000)
                       .attr('fill', function(d,i) {
                         return colorScale(d[selectedDimension]);})
-                      .attr('width', "18px")
+                      .attr('width', "20px")
                       .attr("x", function(d,i) {
                         return xScale(i)})
                       .attr("y", 0)
@@ -98,10 +103,10 @@ class BarChart {
           .selectAll("text")
             .style("text-anchor", "end")
             .attr("transform", function(d) {
-                return "rotate(-90)" 
+                return "translate(-15,10) rotate(-90)"
                 });;
         d3.select('#yAxis')
-          .attr("transform", "translate(60, 38)")
+          .attr("transform", "translate(60, 10)")
           .call(yAxis);
 
 
