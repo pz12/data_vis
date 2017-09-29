@@ -94,7 +94,7 @@ class BarChart {
                       .attr("x", function(d,i) {
                         return xScale(i)})
                       .attr("y", 0)
-                      .attr("height", function(d,i) {
+                      .attr("height", function(d,i) {  console.log(d[selectedDimension]);
                         return yScale(d[selectedDimension]);})
 
         d3.select('#xAxis')

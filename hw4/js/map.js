@@ -20,6 +20,8 @@ class Map {
   d3.selectAll(".team").classed("team", false);
     d3.select(".gold").classed("gold", false);
       d3.select(".silver").classed("silver", false);
+
+      d3.selectAll(".gold.legend-element").classed("gold",true);
         // Hint: If you followed our suggestion of using classes to style
         // the colors and markers for hosts/teams/winners, you can use
         // d3 selection and .classed to set these classes on and off here.
