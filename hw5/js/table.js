@@ -216,7 +216,7 @@ class Table {
             }
           })
           .attr('stroke', function(d) {
-            console.log(d)
+
               if(d.type=='aggregate') {
                 return "none";
               }
@@ -273,7 +273,7 @@ class Table {
             .classed("label", true)
             .attr("x", function(d) { return gameScale(d.value)-10})
             .attr("y",15)
-
+            
         textColumn.text(function(d) {
             return d.value['label']
         });
@@ -289,16 +289,20 @@ class Table {
      */
     updateList(i) {
         // ******* TODO: PART IV *******
-
         let teamList = this.tableElements[i].value.games;
-        for (let j=0; j<teamList.length; j++) {
-          this.tableElements.splice(j+i+1, 0, teamList[j])
+        if(this.tableElements[i+1].value['type']=='aggregate') {
+          for (let j=0; j<teamList.length; j++) {
+            this.tableElements.splice(j+i+1, 0, teamList[j])
+          }
         }
+        else {
 
 
+            this.tableElements.splice(i+1, teamList.length)
 
-        //this.tableElements.splice(i+1, 0, "yes")
+            console.log(this.tableElements)
 
+        }
 
     }
 
