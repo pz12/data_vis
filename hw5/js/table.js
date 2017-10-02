@@ -98,40 +98,79 @@ class Table {
      */
     updateTable() {
         // ******* TODO: PART III *******
-        let data = this.teamData;
         let gameScale = this.gameScale;
         let goalScale = this.goalScale;
         let aggregateColorScale = this.aggregateColorScale;
-
+        let updateList = this.updateList;
+        let tableElements = this.tableElements;
+        let updateTable = this.updateTable;
+        console.log(this.tableElements)
         let tr = d3.select('#matchTable tbody')
                     .selectAll('tr')
-                    .data(this.tableElements)
-                    .enter()
+                    .data(tableElements)
+                  tr.exit()
+                    .remove()
+              tr = tr.enter()
                     .append('tr')
-                    console.log(d3.select('#matchTable tbody'))
+                    .on('click', (d,i) => {
+
+                      this.updateList(i);
+                      this.updateTable();
+                    })
+                    .merge(tr)
+
         //Append th elements for the Team Names
         let th = tr.selectAll("th")
-                    .data(function(d) { return[{'type': 'aggregate', 'vis': 'text', 'value': d.key}] })//return [{'type': d.value['type'], 'vis': 'bars', 'value': 25}]}})
-                    .enter()
-                    .append('th');
+                    .data(function(d) { return[{'type': d.value['type'], 'vis': 'text', 'value': d.key}] })//return [{'type': d.value['type'], 'vis': 'bars', 'value': 25}]}})
+                  th.exit()
+                    .remove()
+            th = th.enter()
+
+                    .append('th')
+                    .merge(th);
         //Append td elements for the remaining columns.
         let td = tr.selectAll("td")
-                    .data(function(d) { return[{'type': 'aggregate', 'vis': 'goals', 'value': {'goalsMade':d.value['Goals Made'], 'goalsConceded':d.value['Goals Conceded']}},
-                                              {'type': 'aggregate', 'vis': 'text', 'value': d.value['Result']},
-                                              {'type': 'aggregate', 'vis': 'bar', 'value': d.value['Wins']},
-                                              {'type': 'aggregate', 'vis': 'bar', 'value': d.value['Losses']},
-                                              {'type': 'aggregate', 'vis': 'bar', 'value': d.value['TotalGames']}
+                    .data(function(d) {
+
+
+                      return[{'type': d.value['type'], 'vis': 'goals', 'value': {'goalsMade':d.value['Goals Made'], 'goalsConceded':d.value['Goals Conceded']}},
+                                              {'type': d.value['type'], 'vis': 'text', 'value': d.value['Result']},
+                                              {'type': d.value['type'], 'vis': 'bar', 'value': d.value['Wins']},
+                                              {'type': d.value['type'], 'vis': 'bar', 'value': d.value['Losses']},
+                                              {'type': d.value['type'], 'vis': 'bar', 'value': d.value['TotalGames']}
                                               ] })
-                    .enter()
+                  td.exit()
+                    .remove()
+                td = td.enter()
                     .append('td')
+                    .merge(td);
 
         //Data for each cell is of the type: {'type':<'game' or 'aggregate'>, 'value':<[array of 1 or two elements]>}
-        th.text(function(d) {return d.value});
+        //th.select('svg').remove()
+        th.text(function(d) {
+
+          if(d.type == 'aggregate') {
+            return d.value
+          }
+          else {
+            return "x"+d.value;
+          }
+        })
+        .style('color', function(d) {
+            if(d.type=='aggregate') {
+              return "black";
+            }
+            else {
+              return "gray";
+            }
+        });
+
         //Populate cells (do one type of cell at a time )
         let goalsColumn = td.filter(function(d) { return d.vis == 'goals'});
         let barColumns = td.filter(function(d) {return d.vis == 'bar'});
         let textColumn = td.filter(function(d) { return d.vis == 'text'});
 
+        goalsColumn.select('svg').remove();
         let goalsBody = goalsColumn.append('svg').attr("width", this.cell.width*2+this.cell.buffer).attr("height", this.cell.height);
         goalsBody.append('rect')
           .classed('goalBar',true)
@@ -140,31 +179,87 @@ class Table {
             else { return 'red'; }
           })
           .attr('width', function(d) {
+
             return Math.abs(goalScale(d.value['goalsMade'] - d.value['goalsConceded']));
           })
-          .attr('height', 10)
+          .attr('height', function(d) {
+            if(d.type=='aggregate') {
+              return 10;
+            }
+            else {
+              return 5;
+            }
+          })
           .attr('x', function(d) {
+
             if (d.value['goalsMade'] > d.value['goalsConceded']) {
               return goalScale(d.value['goalsConceded'])+6;
             }
             else { return goalScale(d.value['goalsMade'])+6; }
           })
-          .attr('y', 10)
+          .attr('y', function(d) {
+            if(d.type=='aggregate') {
+              return 10;
+            }
+            else {
+              return 12.5;
+            }
+          })
         goalsBody.append('circle')
           .classed("goalCircle", true)
-          .attr('fill', "blue")
+          .attr('fill', function(d) {
+            if(d.type=='aggregate') {
+              return "blue";
+            }
+            else {
+              return "none";
+            }
+          })
+          .attr('stroke', function(d) {
+            console.log(d)
+              if(d.type=='aggregate') {
+                return "none";
+              }
+              else {
+                if(d.value['goalsConceded']==d.value['goalsMade']) {
+                  return "gray"
+                }
+                return "blue";
+              }
+            }
+          )
           .attr('cy', 15)
           .attr('cx', function(d) { return goalScale(d.value['goalsMade'])+6})
           .attr('r',5);
         goalsBody.append('circle')
           .classed("goalCircle", true)
-          .attr('fill', "red")
+          .attr('fill', function(d) {
+            if(d.type=='aggregate') {
+              return "red";
+            }
+            else {
+              return "none";
+            }
+          })
+          .attr('stroke', function(d) {
+              if(d.type=='aggregate') {
+                return "none";
+              }
+              else {
+                if(d.value['goalsConceded']==d.value['goalsMade']) {
+                  return "gray"
+                }
+                return "red";
+              }
+            }
+          )
           .attr('cy', 15)
           .attr('cx', function(d) { return goalScale(d.value['goalsConceded'])+6})
           .attr('r',5);
 
 
-        let barBody = barColumns.append('svg').attr("width", this.cell.width*2).attr("height", this.cell.height)
+        barColumns.select('svg').remove();
+        let barBody = barColumns.append('svg').attr("width", this.cell.width).attr("height", this.cell.height)
           barBody.append('rect')
             .attr('width', function(d) { return gameScale(d.value)})
             .attr('height', this.bar.height*2+15)
@@ -178,9 +273,10 @@ class Table {
             .classed("label", true)
             .attr("x", function(d) { return gameScale(d.value)-10})
             .attr("y",15)
-        console.log(barColumns)
 
-        textColumn.text(function(d) {return d.value['label']});
+        textColumn.text(function(d) {
+            return d.value['label']
+        });
         //Create diagrams in the goals column
 
         //Set the color of all games that tied to light gray
@@ -194,7 +290,15 @@ class Table {
     updateList(i) {
         // ******* TODO: PART IV *******
 
-        //Only update list for aggregate clicks, not game clicks
+        let teamList = this.tableElements[i].value.games;
+        for (let j=0; j<teamList.length; j++) {
+          this.tableElements.splice(j+i+1, 0, teamList[j])
+        }
+
+
+
+        //this.tableElements.splice(i+1, 0, "yes")
+
 
     }
 
@@ -205,7 +309,7 @@ class Table {
     collapseList() {
 
         // ******* TODO: PART IV *******
-
+		//this.tableElements.splice()
     }
 
 
