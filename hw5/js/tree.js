@@ -17,10 +17,44 @@ class Tree {
         // ******* TODO: PART VI *******
 
         //Create a tree and give it a size() of 800 by 300.
+        let g = d3.select("#tree");
+        let treemap = d3.tree().size([800, 300]);
+
+          //       //Create a root for the tree using d3.stratify();
+        let root = d3.stratify()
+          .id(function(d,i) {  return i; })
+          .parentId(function(d) { return d.ParentGame; })
+          (treeData);
+
+          let tree = treemap(root);
+          let nodes = tree.descendants();
+
+          let links = tree.descendants().slice(1);
+
+  //
+  //   // Normalize for fixed-depth.
+    nodes.forEach(function(d){ d.y = d.depth * 180});
+  //
+  //   // ****************** Nodes section ***************************
+  //
+  //   // Update the nodes...
+    let node = g.selectAll('g.node')
+        .data(nodes, function(d) {return d.id || (d.id = ++i); });
 
 
-        //Create a root for the tree using d3.stratify();
-
+  //       // Enter any new modes at the parent's previous position.
+  let nodeEnter = node.enter().append('g')
+      .attr('class', 'node')
+      .attr("transform", function(d) {
+        return "translate(" + d.y + "," + d.x+ ")";
+    })
+        .append('circle')
+              .attr('class', 'node')
+              .attr('r', 5)
+              .style("fill", "black");
+              //  function(d) {
+              //     return d._children ? "lightsteelblue" : "#fff";
+              // });
 
         //Add nodes and links to the tree.
 

@@ -10,7 +10,7 @@ class Table {
 
         // Create list of all elements that will populate the table
         // Initially, the tableElements will be identical to the teamData
-        this.tableElements = teamData; //
+        this.tableElements = teamData.slice(0); //
 
         ///** Store all match data for the 2014 Fifa cup */
         this.teamData = teamData;
@@ -57,7 +57,7 @@ class Table {
 //Hint: break up your "chains" often
         // ******* TODO: PART II *******
         let data = this.teamData;
-        console.log(data)
+
         //Update Scale Domains
         this.goalScale = d3.scaleLinear()
                           .domain([d3.min(data, d => d.value['Goals Made']), d3.max(data, d => d.value['Goals Made'])])
@@ -88,8 +88,67 @@ class Table {
         // Set sorting callback for clicking on headers
 
         // Clicking on headers should also trigger collapseList() and updateTable().
+        let sortAscending = false;
+        let headerColumn = d3.select("#matchTable thead tr");
+        headerColumn.selectAll('td').data(this.tableHeaders).on('click', (d,i) => {
+          let tempTable = this.tableElements.slice(0);
+              if(d =="Result") {
+                this.tableElements.sort(function(a, b) {
+                  return d3.descending(a.value[d].ranking, b.value[d].ranking);
+                });
+              }
+              else {
+                this.tableElements.sort(function(a, b) {
+                  return d3.descending(a.value[d], b.value[d]);
+                });
+              }
+            if (tempTable[0].value[d] == this.tableElements[0].value[d]) {
+              if(d =="Result") {
+                this.tableElements.sort(function(a, b) {
+                  return d3.ascending(a.value[d].ranking, b.value[d].ranking);
+                });
+              }
+              else {
+                this.tableElements.sort(function(a, b) {
+                  return d3.ascending(a.value[d], b.value[d]);
+                });
+              }
+            }
 
+            this.collapseList();
+            this.updateTable();
+          })
 
+        headerColumn.select('th').data(["Teams"])
+                    .on('click', (d,i) => {
+                      let tempTable = this.tableElements.slice(0);
+                    this.tableElements.sort(function(a, b) {
+
+                      if (a.key == b.key) return 0;
+                      if (a.key > b.key) return 1;
+                      if (a.key < b.key) return -1;
+                    });
+                    if (tempTable[0].key == this.tableElements[0].key) {
+                      this.tableElements.sort(function(a, b) {
+                        if (a.key == b.key) return 0;
+                        if (a.key < b.key) return 1;
+                        if (a.key > b.key) return -1;
+                      });
+                    }
+                    this.collapseList();
+                    this.updateTable();
+                   })
+console.log(headerColumn)
+        // headerColumn = headerColumn.selectAll("td")
+        //             .data(this.tableHeaders)
+        //             .enter()
+        //
+        //             headerColumn.select('td')
+        //
+        //             headerColumn.on('click', function(d) {
+        //               console.log(d);
+        //               alert('yes')
+        //             })
     }
 
 
@@ -104,7 +163,7 @@ class Table {
         let updateList = this.updateList;
         let tableElements = this.tableElements;
         let updateTable = this.updateTable;
-        console.log(this.tableElements)
+
         let tr = d3.select('#matchTable tbody')
                     .selectAll('tr')
                     .data(tableElements)
@@ -273,7 +332,7 @@ class Table {
             .classed("label", true)
             .attr("x", function(d) { return gameScale(d.value)-10})
             .attr("y",15)
-            
+
         textColumn.text(function(d) {
             return d.value['label']
         });
@@ -296,11 +355,7 @@ class Table {
           }
         }
         else {
-
-
             this.tableElements.splice(i+1, teamList.length)
-
-            console.log(this.tableElements)
 
         }
 
@@ -313,7 +368,7 @@ class Table {
     collapseList() {
 
         // ******* TODO: PART IV *******
-		//this.tableElements.splice()
+		     this.tableElements = this.teamData;
     }
 
 
