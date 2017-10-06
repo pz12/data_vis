@@ -82,13 +82,13 @@ class Tree {
       })
 
       .attr("text-anchor", function(d) {
-      
+
         return d.children || d._children ? "end" : "start";
       })
       .text(function(d) {
         return d.data['Team'];
       })
-      .classed(function(d){return d.data['Team']}, true)
+      .attr("class",function(d){return "treeText "+d.data['Team']})
     let nodeUpdate = nodeEnter.merge(node);
 
     // Transition to the proper position for the node
@@ -130,7 +130,10 @@ class Tree {
 
     // Enter any new links at the parent's previous position.
     let linkEnter = link.enter().insert('path', "g")
-      .attr("class", "link")
+      .attr("class", function(d){
+        //console.log(d)
+        return "link l_" + d.data['Team'];
+      })
       .attr("transform", "translate(75,0)")
       .attr('d', (d) => {
 
@@ -181,7 +184,11 @@ class Tree {
    */
   updateTree(row) {
     // ******* TODO: PART VII *******
-
+    let text = d3.selectAll(".treeText."+row.key)
+    text.attr("fill", "red")
+    let links = d3.selectAll(".link.l_"+row.key)
+    links.style("stroke", "red")
+    console.log(".link.l_"+row.key)
   }
 
   /**
@@ -189,7 +196,8 @@ class Tree {
    */
   clearTree() {
     // ******* TODO: PART VII *******
-
+    d3.selectAll(".link").style("stroke", "#555")
+    d3.selectAll(".treeText").attr("fill", "black")
     // You only need two lines of code for this! No loops!
   }
 }

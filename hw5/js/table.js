@@ -176,7 +176,10 @@ class Table {
                       this.updateTable();
                     })
                     .on('mouseover', (d,i) => {
-                      this.this.tableElements[i];
+                      this.tree.updateTree(this.tableElements[i]);
+                    })
+                    .on('mouseout', (d,i) => {
+                      this.tree.clearTree();
                     })
                     .merge(tr)
 

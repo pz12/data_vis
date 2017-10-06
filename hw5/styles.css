@@ -134,6 +134,10 @@ header {
     stroke-width: 2px;
 }
 
+/*.link.l_CostaRica {
+  stroke: red;
+}*/
+
 .selected {
     stroke: #be2714;
     stroke-width: 4px;
