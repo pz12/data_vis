@@ -138,7 +138,6 @@ class Table {
                     this.collapseList();
                     this.updateTable();
                    })
-console.log(headerColumn)
         // headerColumn = headerColumn.selectAll("td")
         //             .data(this.tableHeaders)
         //             .enter()
@@ -146,7 +145,7 @@ console.log(headerColumn)
         //             headerColumn.select('td')
         //
         //             headerColumn.on('click', function(d) {
-        //               console.log(d);
+        //
         //               alert('yes')
         //             })
     }
@@ -175,6 +174,9 @@ console.log(headerColumn)
 
                       this.updateList(i);
                       this.updateTable();
+                    })
+                    .on('mouseover', (d,i) => {
+                      this.this.tableElements[i];
                     })
                     .merge(tr)
 
@@ -349,15 +351,31 @@ console.log(headerColumn)
     updateList(i) {
         // ******* TODO: PART IV *******
         let teamList = this.tableElements[i].value.games;
-        if(this.tableElements[i+1].value['type']=='aggregate') {
+        if(i != this.tableElements.length-1 ) {
+          if(this.tableElements[i+1].value['type']=='aggregate') {
+            for (let j=0; j<teamList.length; j++) {
+              this.tableElements.splice(j+i+1, 0, teamList[j])
+            }
+          }
+          else {
+              this.tableElements.splice(i+1, teamList.length)
+
+          }
+        }
+        else if(this.tableElements[i].value['type']=='aggregate'){
           for (let j=0; j<teamList.length; j++) {
             this.tableElements.splice(j+i+1, 0, teamList[j])
           }
         }
-        else {
-            this.tableElements.splice(i+1, teamList.length)
-
-        }
+        // if(this.tableElements[i+1].value['type']=='aggregate') {
+        //   for (let j=0; j<teamList.length; j++) {
+        //     this.tableElements.splice(j+i+1, 0, teamList[j])
+        //   }
+        // }
+        // else {
+        //     this.tableElements.splice(i+1, teamList.length)
+        //
+        // }
 
     }
 
