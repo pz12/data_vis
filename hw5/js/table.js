@@ -235,7 +235,8 @@ class Table {
         let textColumn = td.filter(function(d) { return d.vis == 'text'});
 
         goalsColumn.select('svg').remove();
-        let goalsBody = goalsColumn.append('svg').attr("width", this.cell.width*2+this.cell.buffer).attr("height", this.cell.height);
+        let goalsBody = goalsColumn.append('svg')
+        .attr("width", this.cell.width*2+this.cell.buffer).attr("height", this.cell.height)
         goalsBody.append('rect')
           .classed('goalBar',true)
           .attr('fill', function(d) {
@@ -321,15 +322,15 @@ class Table {
           .attr('cx', function(d) { return goalScale(d.value['goalsConceded'])+6})
           .attr('r',5);
 
-
+          barColumns.style("padding-left", "0px")
         barColumns.select('svg').remove();
         let barBody = barColumns.append('svg').attr("width", this.cell.width).attr("height", this.cell.height)
           barBody.append('rect')
             .attr('width', function(d) { return gameScale(d.value)})
-            .attr('height', this.bar.height*2+15)
+            .attr('height', this.bar.height)
             //
             .attr('x', 0)
-            // .attr('y', this.cell.height/2)
+          
             .attr('fill', function(d,i) {
                 return aggregateColorScale(d.value);})
           barBody.append('text')
@@ -338,9 +339,17 @@ class Table {
             .attr("x", function(d) { return gameScale(d.value)-10})
             .attr("y",15)
 
-        textColumn.text(function(d) {
+        textColumn.select('svg').remove()
+        let textBody = textColumn.append('svg')
+          .attr("width", this.cell.width*1.6)
+          .attr("height", this.cell.height)
+        textBody.append("text")
+          .attr("x", 0)
+          .attr("y", this.cell.height/2)
+          .text(function(d) {
             return d.value['label']
-        });
+        })
+
         //Create diagrams in the goals column
 
         //Set the color of all games that tied to light gray
