@@ -187,8 +187,14 @@ class Tree {
     let text = d3.selectAll(".treeText."+row.key)
     text.attr("fill", "red")
     let links = d3.selectAll(".link.l_"+row.key)
-    links.style("stroke", "red")
-    console.log(".link.l_"+row.key)
+    links.style("stroke", function(d) {
+      console.log(d)
+      if(d.data["Losses"]=="1") {
+        return "#555";
+      }
+      else {return "red";}
+    })
+
   }
 
   /**
