@@ -244,8 +244,12 @@ class Table {
             else { return 'red'; }
           })
           .attr('width', function(d) {
-
-            return Math.abs(goalScale(d.value['goalsMade'] - d.value['goalsConceded']));
+            if(d.type=='aggregate') {
+              return Math.abs(goalScale(d.value['goalsMade'] - d.value['goalsConceded']));
+            }
+            else {
+              return Math.abs(goalScale(d.value['goalsMade'] - d.value['goalsConceded']))-10;
+            }
           })
           .attr('height', function(d) {
             if(d.type=='aggregate') {
@@ -256,18 +260,25 @@ class Table {
             }
           })
           .attr('x', function(d) {
-
-            if (d.value['goalsMade'] > d.value['goalsConceded']) {
-              return goalScale(d.value['goalsConceded'])+6;
+            if(d.type=='aggregate') {
+              if (d.value['goalsMade'] > d.value['goalsConceded']) {
+                return goalScale(d.value['goalsConceded'])+6;
+              }
+              else { return goalScale(d.value['goalsMade'])+6; }
             }
-            else { return goalScale(d.value['goalsMade'])+6; }
+            else {
+              if (d.value['goalsMade'] > d.value['goalsConceded']) {
+                return goalScale(d.value['goalsConceded'])+12;
+              }
+              else { return goalScale(d.value['goalsMade'])+12; }
+            }
           })
           .attr('y', function(d) {
             if(d.type=='aggregate') {
-              return 10;
+              return 5;
             }
             else {
-              return 12.5;
+              return 7.5;
             }
           })
         goalsBody.append('circle')
@@ -293,7 +304,7 @@ class Table {
               }
             }
           )
-          .attr('cy', 15)
+          .attr('cy', 10)
           .attr('cx', function(d) { return goalScale(d.value['goalsMade'])+6})
           .attr('r',5);
         goalsBody.append('circle')
@@ -318,7 +329,7 @@ class Table {
               }
             }
           )
-          .attr('cy', 15)
+          .attr('cy', 10)
           .attr('cx', function(d) { return goalScale(d.value['goalsConceded'])+6})
           .attr('r',5);
 
@@ -330,7 +341,7 @@ class Table {
             .attr('height', this.bar.height)
             //
             .attr('x', 0)
-          
+
             .attr('fill', function(d,i) {
                 return aggregateColorScale(d.value);})
           barBody.append('text')

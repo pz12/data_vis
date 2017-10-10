@@ -131,7 +131,6 @@ class Tree {
     // Enter any new links at the parent's previous position.
     let linkEnter = link.enter().insert('path', "g")
       .attr("class", function(d){
-        //console.log(d)
         return "link l_" + d.data['Team'];
       })
       .attr("transform", "translate(75,0)")
@@ -188,7 +187,6 @@ class Tree {
     text.attr("fill", "red")
     let links = d3.selectAll(".link.l_"+row.key)
     links.style("stroke", function(d) {
-      console.log(d)
       if(d.data["Losses"]=="1") {
         return "#555";
       }
