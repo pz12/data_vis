@@ -91,7 +91,9 @@ class Table {
         let sortAscending = false;
         let headerColumn = d3.select("#matchTable thead tr");
         headerColumn.selectAll('td').data(this.tableHeaders).on('click', (d,i) => {
+
           let tempTable = this.tableElements.slice(0);
+            this.collapseList();
               if(d =="Result") {
                 this.tableElements.sort(function(a, b) {
                   return d3.descending(a.value[d].ranking, b.value[d].ranking);
@@ -103,6 +105,7 @@ class Table {
                 });
               }
             if (tempTable[0].value[d] == this.tableElements[0].value[d]) {
+
               if(d =="Result") {
                 this.tableElements.sort(function(a, b) {
                   return d3.ascending(a.value[d].ranking, b.value[d].ranking);
@@ -115,15 +118,16 @@ class Table {
               }
             }
 
-            this.collapseList();
+
             this.updateTable();
           })
 
         headerColumn.select('th').data(["Teams"])
                     .on('click', (d,i) => {
-                      let tempTable = this.tableElements.slice(0);
-                    this.tableElements.sort(function(a, b) {
 
+                      let tempTable = this.tableElements.slice(0);
+                      this.collapseList();
+                    this.tableElements.sort(function(a, b) {
                       if (a.key == b.key) return 0;
                       if (a.key > b.key) return 1;
                       if (a.key < b.key) return -1;
@@ -135,7 +139,6 @@ class Table {
                         if (a.key > b.key) return -1;
                       });
                     }
-                    this.collapseList();
                     this.updateTable();
                    })
         // headerColumn = headerColumn.selectAll("td")
@@ -161,6 +164,7 @@ class Table {
         let aggregateColorScale = this.aggregateColorScale;
         let updateList = this.updateList;
         let tableElements = this.tableElements;
+        console.log(tableElements)
         let updateTable = this.updateTable;
 
         let tr = d3.select('#matchTable tbody')
@@ -409,7 +413,7 @@ class Table {
     collapseList() {
 
         // ******* TODO: PART IV *******
-		     this.tableElements = this.teamData;
+		     this.tableElements = this.teamData.slice(0);
     }
 
 

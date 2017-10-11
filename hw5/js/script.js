@@ -12,8 +12,6 @@ d3.json('data/fifa-matches.json',function(error,data){
         csvData.forEach(function (d, i) {
             d.id = d.Team + d.Opponent + i;
         });
-        console.log(csvMatches)
-        console.log(data)
         let teamData = d3.nest()
           .key(function (d) {
               return d.Team;
@@ -52,7 +50,7 @@ d3.json('data/fifa-matches.json',function(error,data){
               };
           })
           .entries(csvMatches);
-          console.log(teamData)
+
         //Create Tree Object
         let tree = new Tree();
         tree.createTree(csvData);
