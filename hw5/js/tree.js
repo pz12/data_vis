@@ -55,7 +55,7 @@ class Tree {
     let nodeEnter = node.enter().append('g')
       .attr('class', 'node')
         .attr("transform", function(d) {
-          return "translate(" + root.y+10 + "," + root.x + ")";
+          return "translate(" + d.y+10 + "," + d.x + ")";
       })
       nodeEnter.append('circle')
       .attr('class', 'node')
@@ -103,24 +103,6 @@ class Tree {
       // .style("fill", function(d) {
       //     return d._children ? "lightsteelblue" : "#fff";
       // })
-      .attr('cursor', 'pointer');
-
-
-    // Remove any exiting nodes
-    let nodeExit = node.exit()
-      .attr("transform", function(d) {
-        return "translate(" + root.y + "," + root.x + ")";
-      })
-      .remove();
-
-    // On exit reduce the node circles size to 0
-    nodeExit.select('circle')
-      .attr('r', 1e-6);
-
-    // On exit reduce the opacity of text labels
-    nodeExit.select('text')
-      .style('fill-opacity', 1e-6);
-
 
     //Add nodes and links to the tree.
     let link = g.selectAll('path.link')
