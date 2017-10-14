@@ -1,4 +1,4 @@
-   
+
 class ElectoralVoteChart {
     /**
      * Constructor for the ElectoralVoteChart
@@ -7,7 +7,7 @@ class ElectoralVoteChart {
      */
     constructor (shiftChart){
         this.shiftChart = shiftChart;
-        
+
         this.margin = {top: 30, right: 20, bottom: 30, left: 50};
         let divelectoralVotes = d3.select("#electoral-vote").classed("content", true);
 
@@ -49,7 +49,7 @@ class ElectoralVoteChart {
      */
 
    update (electionResult, colorScale){
-
+    
           // ******* TODO: PART II *******
 
     //Group the states based on the winning party for the state;
@@ -82,5 +82,5 @@ class ElectoralVoteChart {
 
     };
 
-    
+
 }
