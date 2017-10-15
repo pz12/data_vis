@@ -58,7 +58,8 @@ class VotePercentageChart {
 	 *
 	 * @param electionResult election data for the year selected
 	 */
-	update (electionResult){
+	update (electionResult, colorScale){
+
 
 	        //for reference:https://github.com/Caged/d3-tip
 	        //Use this tool tip element to handle any hover over the chart
@@ -88,7 +89,87 @@ class VotePercentageChart {
 		    //Create the stacked bar chart.
 		    //Use the global color scale to color code the rectangles.
 		    //HINT: Use .votesPercentage class to style your bars.
+        let data = [['I_Nominee_prop', 'I_PopularPercentage'], ['D_Nominee_prop', 'D_PopularPercentage'], ['R_Nominee_prop', 'R_PopularPercentage']]
+        let count = 0;
+        let length = 0;
+        let totalLength = 1600;
+        this.svg.selectAll('rect').remove();
+        this.svg.selectAll('rect')
+                .data(data)
+                .enter()
+                .append('rect')
+                .attr('class', (d)=>{
+                 return this.chooseClass(d[0].substring(0,1))
+                })
+                .attr('x', (d) => {
 
+                  let percent = parseFloat(electionResult[d[1]].substring(0,electionResult[d[1]].length-1));
+                  percent = percent/100
+                  if(isNaN(percent)) { return 0; }
+                  if(count==0) {
+                    count += 1;
+                    length += 25+percent*totalLength;
+                    return 25;
+                  }
+                  else{
+
+                    let temp = length
+                    length += percent*totalLength;
+                    console.log(temp)
+                    return temp;
+                  }
+                })
+                .attr('y', 20)
+                .attr('width', (d) => {
+
+                  let percent = parseFloat(electionResult[d[1]].substring(0,electionResult[d[1]].length-1));
+                  percent = percent/100
+                  if (!isNaN(percent)) {
+                    return percent*length;
+                  }
+                  else { return 0; }
+                  //return Math.floor(electionResult[d[1]])// /100
+                })
+                .attr('height', 40)
+        length = 0;
+        count = 0;
+        this.svg.selectAll('svg').remove()
+        this.svg.selectAll('svg')
+                .data(data)
+                .enter()
+                .append('svg')
+                .attr("width", (d) => {
+                  let percent = parseFloat(electionResult[d[1]].substring(0,electionResult[d[1]].length-1));
+                  percent = percent/100
+                  if(isNaN(percent)) { return 0; }
+                  if(count==0) {
+                    count += 1;
+                    length += 25+percent*totalLength;
+                    return 25;
+                  }
+                  else{
+                    let temp = length
+                    length += percent*totalLength;
+                    return temp;
+                  }
+                })
+                .attr("height",80)
+                .attr('x', 50)
+                .attr('y', 10)
+        this.svg.selectAll('text').remove()
+        this.svg.selectAll('text')
+                .data(data)
+                .enter()
+                .append('text')
+                .text((d) => {
+                  console.log(electionResult[d[1]])
+                  return electionResult[d[1]]
+                })
+                //.attr('x', 0)
+                .attr('y', 20)
+                .attr('class', (d)=>{
+                  return this.chooseClass(d[0].substring(0,1))
+                })
 		    //Display the total percentage of votes won by each party
 		    //on top of the corresponding groups of bars.
 		    //HINT: Use the .votesPercentageText class to style your text elements;  Use this in combination with

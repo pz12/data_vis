@@ -101,12 +101,13 @@ class YearChart {
             .attr('r', 15)
             .attr('cy', circleCenter)
             .attr('cx', function(d,i) {return 103*i+70;})
+            .attr('cursor', "pointer")
 
             .on('click', (d,i) => {
               d3.csv('data/year_timeline_'+d['YEAR']+'.csv', (error, electionResults) => {
-                this.tileChart.update(electionResults, this.colorScale)
-                this.electoralVoteChart.update(electionResults, this.colorScale)
-                this.votePercentageChart.update(electionResults, this.colorScale)
+                this.tileChart.update(electionResults[i], this.colorScale)
+                this.electoralVoteChart.update(electionResults[i], this.colorScale)
+                this.votePercentageChart.update(electionResults[i], this.colorScale)
               });
               this.svg.selectAll('.highlighted').remove()
               this.svg.selectAll('.highlighted2').remove()
@@ -116,12 +117,15 @@ class YearChart {
                       .attr('r', 17)
                       .attr('cy', circleCenter)
                       .attr('cx', 103*i+70)
+                      .attr('cursor', "pointer")
+
               this.svg.append('circle')
                       .attr('fill', 'none')
                       .classed('highlighted', true)
                       .attr('cx', i*103+70)
                       .attr('cy', circleCenter)
                       .attr('r', 17)
+                      .attr('cursor', "pointer")
             })
 
             .on('mouseover', (d,i) => {
@@ -134,6 +138,7 @@ class YearChart {
                       .attr('r', 15)
                       .attr('stroke', '#404040')
                       .attr('stroke-width', 3)
+
             })
 
             .on('mouseout', (d) => {

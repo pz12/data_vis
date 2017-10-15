@@ -49,12 +49,12 @@ class ElectoralVoteChart {
      */
 
    update (electionResult, colorScale){
-    
+
           // ******* TODO: PART II *******
 
     //Group the states based on the winning party for the state;
     //then sort them based on the margin of victory
-
+    this.svg.selectAll('rect').remove()
     //Create the stacked bar chart.
     //Use the global color scale to color code the rectangles.
     //HINT: Use .electoralVotes class to style your bars.
