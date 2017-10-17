@@ -47,7 +47,7 @@ class VotePercentageChart {
 	tooltip_render (tooltip_data) {
 	    let text = "<ul>";
 	    tooltip_data.result.forEach((row)=>{
-	        text += "<li class = " + this.chooseClass(row.party)+ ">" + row.nominee+":\t\t"+row.votecount+"("+row.percentage+"%)" + "</li>"
+	        text += "<li class = " + this.chooseClass(row.party)+ ">" + row.nominee+":\t\t"+row.votecount+"("+row.percentage+")" + "</li>"
 	    });
 
 	    return text;
@@ -69,18 +69,19 @@ class VotePercentageChart {
 	                return [0,0];
 	            })
 	            .html((d)=> {
-	                /* populate data in the following format
-	                 * tooltip_data = {
-	                 * "result":[
-	                 * {"nominee": D_Nominee_prop,"votecount": D_Votes_Total,"percentage": D_PopularPercentage,"party":"D"} ,
-	                 * {"nominee": R_Nominee_prop,"votecount": R_Votes_Total,"percentage": R_PopularPercentage,"party":"R"} ,
-	                 * {"nominee": I_Nominee_prop,"votecount": I_Votes_Total,"percentage": I_PopularPercentage,"party":"I"}
-	                 * ]
-	                 * }
-	                 * pass this as an argument to the tooltip_render function then,
-	                 * return the HTML content returned from that method.
-	                 * */
-	                return;
+
+	                // populate data in the following format
+	                 let tooltip_data = {
+  	                  "result":[
+  	                  {"nominee": electionResult['D_Nominee_prop'],"votecount": electionResult['D_Votes_Total'],"percentage": electionResult['D_PopularPercentage'],"party":"D"} ,
+  	                  {"nominee":  electionResult['R_Nominee_prop'],"votecount": electionResult['R_Votes_Total'],"percentage": electionResult['R_PopularPercentage'],"party":"R"} ,
+  	                  {"nominee": electionResult['I_Nominee_prop'],"votecount": electionResult['I_Votes_Total'],"percentage": electionResult['I_PopularPercentage'],"party":"I"}
+  	                  ]
+	                  }
+	                  // pass this as an argument to the tooltip_render function then,
+	                  // return the HTML content returned from that method.
+	                 return this.tooltip_render(tooltip_data)
+
 	            });
 
 
@@ -89,10 +90,12 @@ class VotePercentageChart {
 		    //Create the stacked bar chart.
 		    //Use the global color scale to color code the rectangles.
 		    //HINT: Use .votesPercentage class to style your bars.
-        let data = [['I_Nominee_prop', 'I_PopularPercentage'], ['D_Nominee_prop', 'D_PopularPercentage'], ['R_Nominee_prop', 'R_PopularPercentage']]
+        this.svg.call(tip)
+        let data = [['I_Nominee_prop', 'I_PopularPercentage', 'I_Votes_Total'],
+          ['D_Nominee_prop', 'D_PopularPercentage', 'D_Votes_Total'], ['R_Nominee_prop', 'R_PopularPercentage', 'R_Votes_Total']]
         let count = 0;
         let length = 0;
-        let totalLength = 1600;
+        let totalLength = 1200;
         this.svg.selectAll('rect').remove();
         this.svg.selectAll('rect')
                 .data(data)
@@ -115,30 +118,34 @@ class VotePercentageChart {
 
                     let temp = length
                     length += percent*totalLength;
-                    console.log(temp)
+
                     return temp;
                   }
                 })
-                .attr('y', 20)
+                .attr('y', 125)
                 .attr('width', (d) => {
 
                   let percent = parseFloat(electionResult[d[1]].substring(0,electionResult[d[1]].length-1));
                   percent = percent/100
                   if (!isNaN(percent)) {
-                    return percent*length;
+                    return percent*totalLength;
                   }
                   else { return 0; }
                   //return Math.floor(electionResult[d[1]])// /100
                 })
                 .attr('height', 40)
+                .on('mouseover', tip.show)
+                .on('mouseout', tip.hide)
         length = 0;
         count = 0;
+        let count2 = 0;
         this.svg.selectAll('svg').remove()
-        this.svg.selectAll('svg')
+        let svgs = this.svg.selectAll('svg')
                 .data(data)
                 .enter()
                 .append('svg')
-                .attr("width", (d) => {
+                .attr('x', (d) => {
+
                   let percent = parseFloat(electionResult[d[1]].substring(0,electionResult[d[1]].length-1));
                   percent = percent/100
                   if(isNaN(percent)) { return 0; }
@@ -147,29 +154,99 @@ class VotePercentageChart {
                     length += 25+percent*totalLength;
                     return 25;
                   }
-                  else{
+                  else {
+                    count += 1;
                     let temp = length
                     length += percent*totalLength;
                     return temp;
                   }
+
+                })
+                .attr("width", (d) => {
+                  let percent = parseFloat(electionResult[d[1]].substring(0,electionResult[d[1]].length-1));
+
+                  percent = percent/100
+                  if (!isNaN(percent)) {
+                    if(count2==0) {
+                      count2 += 1;
+                      return percent*length+electionResult[d[1]].length*20;
+                    }
+
+                    count2 += 1;
+                    return percent*length;
+                  }
+                  else { return 0; }
                 })
                 .attr("height",80)
-                .attr('x', 50)
-                .attr('y', 10)
-        this.svg.selectAll('text').remove()
-        this.svg.selectAll('text')
-                .data(data)
-                .enter()
-                .append('text')
+                .attr('y', 50)
+        count = 0;
+              svgs.append('text')
                 .text((d) => {
-                  console.log(electionResult[d[1]])
+
                   return electionResult[d[1]]
                 })
-                //.attr('x', 0)
-                .attr('y', 20)
+                .attr('x',(d) => {
+
+                  if (count < 2) {
+                    count += 1;
+                    return 5;
+                  }
+                  else {
+                    return "99%"
+                  }
+                })
+                .attr('y', 70)
                 .attr('class', (d)=>{
                   return this.chooseClass(d[0].substring(0,1))
                 })
+                .style('font-size', "25px")
+              count = 0;
+
+              svgs.append('text')
+                .text((d) => {
+
+                  return electionResult[d[0]]
+                })
+                .attr('x',(d) => {
+
+                  if (count == 0) {
+                    count += 1;
+                    return 5;
+                  }
+                  else if (count == 1) {
+                    count += 1;
+                    return '15%';
+                  }
+                  else {
+                    return "99%"
+                  }
+                })
+                .attr('y', 30)
+                .attr('class', (d)=>{
+                  return this.chooseClass(d[0].substring(0,1))
+                })
+                .style('font-size', "25px")
+
+      let middlesvg = this.svg.append('svg')
+                .attr('width', 200)
+                .attr('height', 100)
+                .attr('x', length/2-105)
+                .attr('y', 90)
+      middlesvg.append('text')
+                .text('Popular Vote 50%')
+                .attr('class', 'yeartext')
+                .attr('x', '50%')
+                .attr('y', 15)
+                .style('font-size', "16px")
+      middlesvg.append('rect')
+                .attr('width', 2)
+                .attr('height', 60)
+                .attr('x', '50%')
+                .attr('y', 25)
+                .attr('fill', 'black')
+
+
+
 		    //Display the total percentage of votes won by each party
 		    //on top of the corresponding groups of bars.
 		    //HINT: Use the .votesPercentageText class to style your text elements;  Use this in combination with
