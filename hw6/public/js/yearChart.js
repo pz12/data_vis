@@ -74,15 +74,14 @@ class YearChart {
     //The circles should be colored based on the winning party for that year
     //HINT: Use the .yearChart class to style your circle elements
     //HINT: Use the chooseClass method to choose the color corresponding to the winning party.
-    let circleCenter = 20
+    let circleCenter = 30
     this.svg.selectAll('line')
             .data(this.electionWinners)
             .enter()
             .append('line')
-
             .attr('class', 'lineChart')
-            .attr('x1', function(d,i) {return 103*i+73})
-            .attr('x2', function(d,i) {return 103*i+173})
+            .attr('x1', function(d,i) {return 145*i+85})
+            .attr('x2', function(d,i) {return 145*i+205})
             .attr('y1', circleCenter)
             .attr('y2', circleCenter)
     this.svg.append('line')
@@ -98,15 +97,15 @@ class YearChart {
             .attr('class', (d) => {
               return this.chooseClass(d['PARTY']);
               })
-            .attr('r', 15)
+            .attr('r', 20)
             .attr('cy', circleCenter)
-            .attr('cx', function(d,i) {return 103*i+70;})
+            .attr('cx', function(d,i) {return 145*i+70;})
             .attr('cursor', "pointer")
 
             .on('click', (d,i) => {
               d3.csv('data/year_timeline_'+d['YEAR']+'.csv', (error, electionResults) => {
                 this.tileChart.update(electionResults[i], this.colorScale)
-                this.electoralVoteChart.update(electionResults[i], this.colorScale)
+                this.electoralVoteChart.update(electionResults, this.colorScale)
                 this.votePercentageChart.update(electionResults[i], this.colorScale)
               });
               this.svg.selectAll('.highlighted').remove()
@@ -114,17 +113,17 @@ class YearChart {
 
               this.svg.append('circle')
                       .attr('class', this.chooseClass(d['PARTY'])+" highlighted2")
-                      .attr('r', 17)
+                      .attr('r', 22)
                       .attr('cy', circleCenter)
-                      .attr('cx', 103*i+70)
+                      .attr('cx', 145*i+70)
                       .attr('cursor', "pointer")
 
               this.svg.append('circle')
                       .attr('fill', 'none')
                       .classed('highlighted', true)
-                      .attr('cx', i*103+70)
+                      .attr('cx', i*145+70)
                       .attr('cy', circleCenter)
-                      .attr('r', 17)
+                      .attr('r', 22)
                       .attr('cursor', "pointer")
             })
 
@@ -133,9 +132,9 @@ class YearChart {
               this.svg.append('circle')
                       .attr('fill', 'none')
                       .classed('highlighted3', true)
-                      .attr('cx', i*103+70)
+                      .attr('cx', i*145+70)
                       .attr('cy', circleCenter)
-                      .attr('r', 15)
+                      .attr('r', 20)
                       .attr('stroke', '#404040')
                       .attr('stroke-width', 3)
 
@@ -153,8 +152,8 @@ class YearChart {
             .enter()
             .append('text')
             .classed('.yeartext', true)
-            .attr('y', circleCenter+35)
-            .attr('x', function(d,i) {return 103*i+52;})
+            .attr('y', circleCenter+40)
+            .attr('x', function(d,i) {return 145*i+52;})
             .text(function(d) {return d['YEAR']})
     //Style the chart by adding a dashed line that connects all these years.
     //HINT: Use .lineChart to style this dashed line

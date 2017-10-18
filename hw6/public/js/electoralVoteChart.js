@@ -50,19 +50,123 @@ class ElectoralVoteChart {
 
    update (electionResult, colorScale){
 
-          // ******* TODO: PART II *******
+        // ******* TODO: PART II *******
 
-    //Group the states based on the winning party for the state;
-    //then sort them based on the margin of victory
-    this.svg.selectAll('rect').remove()
+        //Group the states based on the winning party for the state;
+        //then sort them based on the margin of victory
+        let independentStates = [];
+        let RDstates = [];
+        electionResult.forEach(function(element) {
+          if(element.RD_Difference == 0) {
+            independentStates.push(element);
+          }
+          else { RDstates.push(element); }
+        })
+        RDstates.sort(function(a,b) {
+          return d3.ascending(parseFloat(a.RD_Difference), parseFloat(b.RD_Difference));
+        })
+        let sortedResults = [];
+        sortedResults = sortedResults.concat(independentStates)
+        sortedResults = sortedResults.concat(RDstates);
+        console.log(sortedResults)
+
+
     //Create the stacked bar chart.
     //Use the global color scale to color code the rectangles.
     //HINT: Use .electoralVotes class to style your bars.
+    let length = 0;
+    let scaleNum = 3.3;
+    this.svg.selectAll('rect').remove()
+    this.svg.selectAll('rect')
+            .data(sortedResults)
+            .enter()
+            .append('rect')
+            .attr('class', 'electoralVotes')
+            .attr('id', (d) => {
+              return d.Abbreviation;
+            })
+            .attr('x', (d) => {
+              let temp = length;
+              length += d.Total_EV*scaleNum;
+              return temp+25;
+            })
+            .attr('width', (d) => {
+              return d.Total_EV*scaleNum;
+            })
+            .attr('height', 40)
+            .attr('y', 60)
+            .attr('fill', (d) => {
+              if(d.RD_Difference == 0) {return '#45AD6A'}
+              else {
+                return colorScale(d.RD_Difference)
+              }
+            })
+
 
     //Display total count of electoral votes won by the Democrat and Republican party
     //on top of the corresponding groups of bars.
     //HINT: Use the .electoralVoteText class to style your text elements;  Use this in combination with
     // chooseClass to get a color based on the party wherever necessary
+    let R_total = sortedResults[0].R_EV_Total;
+    let D_total = sortedResults[0].D_EV_Total;
+    let I_total = sortedResults[0].I_EV_Total;
+    let totals = [[I_total, 'I'], [D_total, 'D'], [R_total, 'R']];
+    length = 0;
+    this.svg.selectAll('svg').remove()
+    let svgs = this.svg.selectAll('svg')
+            .data(totals)
+            .enter()
+            .append('svg')
+            .attr('width', (d) => {
+              if(d[0]=="") { return 0; }
+              return parseInt(d[0])*scaleNum;
+            })
+            .attr('height', 40)
+            .attr('x', (d) => {
+              if(d[0]=="") {return 0;}
+              let temp = length;
+              length += parseInt(d[0])*scaleNum;
+              return temp+25;
+            })
+            .attr('y', 20)
+      let count = 0;
+      svgs.append('text')
+            .attr('class', (d) => {
+              return this.chooseClass(d[1])
+            })
+            .text(function(d) {
+              return d[0];
+            })
+            .style('font-size', "25px")
+            .attr('y', 30)
+            .attr('x', (d) => {
+              if (count < 2) {
+                count += 1;
+                return 0;
+              }
+              else {
+                return "99%";
+              }
+            })
+
+        let middlesvg = this.svg.append('svg')
+                  .attr('width', 300)
+                  .attr('height', 100)
+                  .attr('x', length/2-140)
+                  .attr('y', 25)
+        middlesvg.append('text')
+                  .text('Electoral Vote (270 needed to win)')
+                  .attr('class', 'electoralVotesNote')
+                  .attr('x', '50%')
+                  .attr('y', 15)
+                  .style('font-size', "16px")
+        middlesvg.append('rect')
+                  .attr('width', 2)
+                  .attr('height', 60)
+                  .attr('x', '50%')
+                  .attr('y', 25)
+                  .attr('class', 'middlePoint')
+
 
     //Display a bar with minimal width in the center of the bar chart to indicate the 50% mark
     //HINT: Use .middlePoint class to style this bar.

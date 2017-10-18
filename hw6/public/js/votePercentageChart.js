@@ -47,9 +47,10 @@ class VotePercentageChart {
 	tooltip_render (tooltip_data) {
 	    let text = "<ul>";
 	    tooltip_data.result.forEach((row)=>{
-	        text += "<li class = " + this.chooseClass(row.party)+ ">" + row.nominee+":\t\t"+row.votecount+"("+row.percentage+")" + "</li>"
+        if(row.votecount != "") {
+          text += "<li class = " + this.chooseClass(row.party)+ ">" + row.nominee+":\t\t"+row.votecount+" ("+row.percentage+")" + "</li>"
+        }
 	    });
-
 	    return text;
 	}
 
@@ -95,7 +96,7 @@ class VotePercentageChart {
           ['D_Nominee_prop', 'D_PopularPercentage', 'D_Votes_Total'], ['R_Nominee_prop', 'R_PopularPercentage', 'R_Votes_Total']]
         let count = 0;
         let length = 0;
-        let totalLength = 1200;
+        let totalLength = 1800;
         this.svg.selectAll('rect').remove();
         this.svg.selectAll('rect')
                 .data(data)
@@ -192,7 +193,7 @@ class VotePercentageChart {
                     return 5;
                   }
                   else {
-                    return "99%"
+                    return "98%"
                   }
                 })
                 .attr('y', 70)
@@ -243,7 +244,7 @@ class VotePercentageChart {
                 .attr('height', 60)
                 .attr('x', '50%')
                 .attr('y', 25)
-                .attr('fill', 'black')
+                .attr('class', 'middlePoint')
 
 
 
