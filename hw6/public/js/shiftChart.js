@@ -14,10 +14,10 @@ class ShiftChart {
      * @param selectedStates data corresponding to the states selected on brush
      */
     update(selectedStates){
-     
+
      // ******* TODO: PART V *******
     //Display the names of selected states in a list
-
+    
     //******** TODO: PART VI*******
     //Use the shift data corresponding to the selected years and sketch a visualization
     //that encodes the shift information

@@ -104,7 +104,7 @@ class YearChart {
 
             .on('click', (d,i) => {
               d3.csv('data/year_timeline_'+d['YEAR']+'.csv', (error, electionResults) => {
-                this.tileChart.update(electionResults[i], this.colorScale)
+                this.tileChart.update(electionResults, this.colorScale)
                 this.electoralVoteChart.update(electionResults, this.colorScale)
                 this.votePercentageChart.update(electionResults[i], this.colorScale)
               });

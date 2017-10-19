@@ -182,9 +182,21 @@ class ElectoralVoteChart {
     //Implement a call back method to handle the brush end event.
     //Call the update method of shiftChart and pass the data corresponding to brush selection.
     //HINT: Use the .brush class to style the brush.
-
-
+    // console.log(+this.svg.attr("width"))
+    //  var maxX  = +this.svg.attr("width")
+    // var maxY = +this.svg.attr("height")
+    if(I_total =="") {
+      I_total = "0";
+    }
+    var maxScale = (parseInt(I_total) + parseInt(R_total) + parseInt(D_total))*scaleNum;
+    maxScale = Math.floor(maxScale)
+    var brush = d3.brushX().extent([25,60],[maxScale,80]).on("end", this.brushed);
+    this.svg.append("g").attr("class", "brush").call(brush)
+            .attr('fill', 'black')
     };
 
+    brushed() {
+       this.shiftChart.update(["UT"])
+     }
 
 }
