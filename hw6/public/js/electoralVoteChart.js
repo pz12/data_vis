@@ -21,6 +21,7 @@ class ElectoralVoteChart {
             .attr("width",this.svgWidth)
             .attr("height",this.svgHeight)
 
+
     };
 
     /**
@@ -167,7 +168,7 @@ class ElectoralVoteChart {
                   .attr('y', 25)
                   .attr('class', 'middlePoint')
 
-
+    console.log(sortedResults[0].state)
     //Display a bar with minimal width in the center of the bar chart to indicate the 50% mark
     //HINT: Use .middlePoint class to style this bar.
 
@@ -185,18 +186,58 @@ class ElectoralVoteChart {
     // console.log(+this.svg.attr("width"))
     //  var maxX  = +this.svg.attr("width")
     // var maxY = +this.svg.attr("height")
+    let shiftChart = this.shiftChart;
+    let brushed = function() {
+       let selection = d3.event.selection;
+       let nextIndex = 0
+       let beginning=0;
+       let end = 25;
+       let selectedStates = [];
+       let regionBool = false;
+       let selectionIndex = 0;
+      for(let j=0; j<sortedResults.length; j++) {
+        beginning = end;
+        end = beginning+ parseInt(sortedResults[j].Total_EV)*scaleNum;
+        if(selection[0]>=beginning && selection[0]<=end) {
+          selectedStates.push(sortedResults[j].State)
+          regionBool = true;
+          selectionIndex = 1;
+        }
+        else if(selection[1]>=beginning && selection[1]<=end) {
+          selectedStates.push(sortedResults[j].State)
+          break;
+        }
+        else {
+          selectedStates.push(sortedResults[j].State)
+        }
+
+        //else if(selectionIndex ==1) { selectedStates.push(sortedResults[j].State) }
+        // else if((selection[1]>=lastLocation && selection[1]<=location) && selectionIndex==1) {
+        //   selectedStates.push(sortedResults[j].State)
+        //   break;
+        // }
+      }
+
+      shiftChart.update(selectedStates)
+     }
+
+
     if(I_total =="") {
       I_total = "0";
     }
     var maxScale = (parseInt(I_total) + parseInt(R_total) + parseInt(D_total))*scaleNum;
     maxScale = Math.floor(maxScale)
-    var brush = d3.brushX().extent([25,60],[maxScale,80]).on("end", this.brushed);
-    this.svg.append("g").attr("class", "brush").call(brush)
-            .attr('fill', 'black')
+    let brush = d3.brushX()
+        .extent([[25, 50], [maxScale+25, 110]])
+        .on("end", brushed);
+        this.svg.append("g")
+              .attr("class", "brush")
+              .call(brush)
+
+
+
     };
 
-    brushed() {
-       this.shiftChart.update(["UT"])
-     }
+
 
 }

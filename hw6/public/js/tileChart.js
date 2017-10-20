@@ -106,7 +106,7 @@ class TileChart {
                     return [0,0];
                 })
                 .html((d)=>{
-                  console.log(d)
+                  
                     // populate data in the following format
                     let tooltip_data = {
                         "state": d.Abbreviation,

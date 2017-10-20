@@ -17,7 +17,15 @@ class ShiftChart {
 
      // ******* TODO: PART V *******
     //Display the names of selected states in a list
-    
+    console.log(selectedStates)
+    var ul = this.divShiftChart.append('ul');
+
+  	ul.selectAll('li')
+    	.data(selectedStates)
+    	.enter()
+    	.append('li')
+    	.html(String);
+    this.divShiftChart.selectAll('li')
     //******** TODO: PART VI*******
     //Use the shift data corresponding to the selected years and sketch a visualization
     //that encodes the shift information
