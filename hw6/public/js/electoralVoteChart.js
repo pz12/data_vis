@@ -203,11 +203,11 @@ class ElectoralVoteChart {
           regionBool = true;
           selectionIndex = 1;
         }
-        else if(selection[1]>=beginning && selection[1]<=end) {
+        else if(selection[1]>=beginning && selection[1]<=end && regionBool==true) {
           selectedStates.push(sortedResults[j].State)
           break;
         }
-        else {
+        else if(regionBool==true) {
           selectedStates.push(sortedResults[j].State)
         }
 

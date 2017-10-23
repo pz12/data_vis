@@ -17,7 +17,8 @@ class ShiftChart {
 
      // ******* TODO: PART V *******
     //Display the names of selected states in a list
-    console.log(selectedStates)
+    this.divShiftChart.select('ul').remove();
+      this.divShiftChart.selectAll('li').remove();
     var ul = this.divShiftChart.append('ul');
 
   	ul.selectAll('li')
