@@ -13,16 +13,16 @@ class ShiftChart {
      *
      * @param selectedStates data corresponding to the states selected on brush
      */
-    update(selectedStates){
+    update(selection){
 
      // ******* TODO: PART V *******
     //Display the names of selected states in a list
     this.divShiftChart.select('ul').remove();
-      this.divShiftChart.selectAll('li').remove();
-    var ul = this.divShiftChart.append('ul');
+    this.divShiftChart.selectAll('li').remove();
 
+    let ul = this.divShiftChart.append('ul');
   	ul.selectAll('li')
-    	.data(selectedStates)
+    	.data(selection)
     	.enter()
     	.append('li')
     	.html(String);

@@ -210,14 +210,7 @@ class ElectoralVoteChart {
         else if(regionBool==true) {
           selectedStates.push(sortedResults[j].State)
         }
-
-        //else if(selectionIndex ==1) { selectedStates.push(sortedResults[j].State) }
-        // else if((selection[1]>=lastLocation && selection[1]<=location) && selectionIndex==1) {
-        //   selectedStates.push(sortedResults[j].State)
-        //   break;
-        // }
       }
-
       shiftChart.update(selectedStates)
      }
 
@@ -233,9 +226,6 @@ class ElectoralVoteChart {
         this.svg.append("g")
               .attr("class", "brush")
               .call(brush)
-
-
-
     };
 
 
