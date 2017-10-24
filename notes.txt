@@ -1,0 +1,13 @@
+Both designs show simple percentages in different means of both national shifts and state shifts 
+	according to the states chosen by the user. The percentage is taken from the two year endpoints.
+
+Visualization #1
+Uses a dropbox to all the user to choose a range of years. This allows for easy access to variating election ranges.
+The percentage shifts are represented with rectangles through length. The color shows what party the shift moved towards.
+The visualization is easy to interpret and not complicated. The user can get a general sense of what the shifts are.
+
+Visualization #2
+Instead of a dropbox, the user can type in the number of elections back they want to see. This allows more flexibility.
+The percentage shifts are shown by color gradient: the darker the color, the bigger shift. Instead of rects, it uses
+	an arrow where the direction doesn't mean anything (that's a downfall of this design).
+Once again, this is a very simple design to help the user see the shift in a general sense.
