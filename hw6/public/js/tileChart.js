@@ -106,10 +106,10 @@ class TileChart {
                     return [0,0];
                 })
                 .html((d)=>{
-                  
+
                     // populate data in the following format
                     let tooltip_data = {
-                        "state": d.Abbreviation,
+                        "state": d.State,
                         "winner":d.State_Winner,
                         "electoralVotes" : d.Total_EV,
                         "result":[
@@ -122,7 +122,7 @@ class TileChart {
                      // pass this as an argument to the tooltip_render function then,
                      // return the HTML content returned from that method.
 
-                    return this.tooltip_render(tooltip_data)
+                    return this.tooltip_render(tooltip_data);
                 });
                 this.svg.call(tip)
             // ******* TODO: PART IV *******
